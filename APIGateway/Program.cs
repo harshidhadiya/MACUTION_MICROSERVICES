@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = "https://localhost:5005"; // your auth server
+        options.Authority = "https://localhost:5005"; 
         options.Audience = "gateway";
         options.RequireHttpsMetadata = false;
     });
@@ -21,6 +21,6 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapReverseProxy();   // This replaces your controller
+app.MapReverseProxy();   
 
 app.Run();

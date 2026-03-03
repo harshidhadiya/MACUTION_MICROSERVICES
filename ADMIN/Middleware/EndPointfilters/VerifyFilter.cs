@@ -2,6 +2,7 @@ using ADMIN.Data.Dto;
 using ADMIN.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 
 namespace ADMIN.Middleware.EndPointfilters
 {
@@ -28,7 +29,7 @@ namespace ADMIN.Middleware.EndPointfilters
                     ));
                     return;
                 }   
-           var verifier = await _db.REQUESTS.FindAsync(userid);
+           var verifier = await _db.REQUESTS.Where(r => r.RequestUserId == userid).FirstOrDefaultAsync();
             if (verifier == null || !verifier.VerifiedByAdmin)
             {
                 _logger.LogWarning("User {UserId} attempted to verify a request without proper verification", userid);

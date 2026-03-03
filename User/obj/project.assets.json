@@ -3925,25 +3925,24 @@
     ]
   },
   "packageFolders": {
-    "/home/harshid/.nuget/packages/": {}
+    "C:\\Users\\Harshid Hadiya\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/User/User.csproj",
+      "projectUniqueName": "D:\\Codes_pracitce\\MACUTION2\\User\\User.csproj",
       "projectName": "User",
-      "projectPath": "/home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/User/User.csproj",
-      "packagesPath": "/home/harshid/.nuget/packages/",
-      "outputPath": "/home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/User/obj/",
+      "projectPath": "D:\\Codes_pracitce\\MACUTION2\\User\\User.csproj",
+      "packagesPath": "C:\\Users\\Harshid Hadiya\\.nuget\\packages\\",
+      "outputPath": "D:\\Codes_pracitce\\MACUTION2\\User\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/harshid/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Harshid Hadiya\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4054,7 +4053,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
