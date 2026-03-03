@@ -1,6 +1,3 @@
-using Microsoft.Identity.Client;
-using Name;
-
 namespace USER.Data.Dto
 {
     public class UserCreateDto
@@ -21,7 +18,6 @@ namespace USER.Data.Dto
     }
     public class UserLoginResponseDto
     {
-        Tokenget token=new Tokenget();
         public int Id{get;set;}
         public String Name { get; set; }
         public String Email { get; set; }

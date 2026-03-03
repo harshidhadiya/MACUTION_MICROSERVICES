@@ -16,6 +16,8 @@ namespace Name
 
         public String getToken(String name, String role,String Id)
         {
+            
+            role=role.ToUpperInvariant();
             var claims = new [] {new Claim("Name",name),new Claim(ClaimTypes.Role,role),new Claim("ID",Id)};
             var seckretkey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
             var SigningCredentials=new SigningCredentials(seckretkey,SecurityAlgorithms.HmacSha256);

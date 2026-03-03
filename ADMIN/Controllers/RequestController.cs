@@ -73,6 +73,7 @@ namespace ADMIN.Controllers
                 };
 
                 _db.REQUESTS.Add(request);
+                
                 await _db.SaveChangesAsync();
 
                 _logger.LogInformation("Request created successfully for user {UserId}", dto.RequestUserId);

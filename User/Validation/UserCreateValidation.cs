@@ -35,7 +35,7 @@ namespace USER.Validation
             RuleFor(x => x.Password).NotEmpty().WithMessage("password must filled up");
             RuleFor(x => x.Role)
                                 .NotEmpty()
-                                .Must(role => role == "USER" || role == "SELLER")
+                                .Must(role => role == "USER" || role == "SELLER" || role == "ADMIN")
                                 .WithMessage("Role must be either USER or SELLER");
         }
     }
