@@ -12,8 +12,8 @@ using USER.Model;
 namespace User.Migrations
 {
     [DbContext(typeof(MACUTIONDB))]
-    [Migration("20260302065953_firstmigration")]
-    partial class firstmigration
+    [Migration("20260302162718_default")]
+    partial class @default
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +77,19 @@ namespace User.Migrations
                         .IsUnique();
 
                     b.ToTable("USERS");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "123 Main St",
+                            CreatedAt = new DateTime(2024, 6, 1, 5, 30, 0, 0, DateTimeKind.Local),
+                            Email = "harshid.hadiya@gmail.com",
+                            HashPassword = "AQAAAAIAAYagAAAAEFT9RFfK4iHUi5Ju7L5g9318ZE/4RtcErhPGnBI8QT/MM0Rtp/4ZoNLdKqcjs1yI8A==",
+                            Name = "harshid",
+                            Phone = "1234567890",
+                            Role = "SELLER"
+                        });
                 });
 #pragma warning restore 612, 618
         }

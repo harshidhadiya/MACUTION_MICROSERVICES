@@ -4,8 +4,6 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MACUTION.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +19,20 @@ builder.Services.AddSingleton<PasswordHasher<object>>();
 builder.Services.AddDbContext<MACUTIONDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddValidatorsFromAssemblyContaining<UserCreateValidation>();
 builder.Services.AddFluentValidationAutoValidation();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5087") 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+builder.Services.AddHttpClient("DefaultClient", option => {
+    option.BaseAddress = new Uri(builder.Configuration["Microservice:Request_admin_url"]);
+});
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAuthentication(options =>   
 {  
@@ -44,6 +56,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ItokenGeneration,Tokenget>();
 builder.Services.AddAutoMapper(typeof(Mapper));
 var app = builder.Build();
+app.UseCors("MyPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<MappingId>();
@@ -51,4 +64,4 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
 app.MapGet("/", () => "Creating Project For User Management System");
-app.Run();
+app.Run("http://localhost:8080");

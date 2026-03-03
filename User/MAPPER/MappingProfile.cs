@@ -2,13 +2,15 @@ using AutoMapper;
 using USER.Model;
 using USER.Data.Dto;
 using Microsoft.AspNetCore.Identity;
+using Name;
 
 namespace USER.MAPPER
 {
-    public class MappingProfile : Profile 
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
+            Tokenget token = new Tokenget();
             var hash = new PasswordHasher<object>();
 
             CreateMap<UserCreateDto, UserTable>()
@@ -17,6 +19,8 @@ namespace USER.MAPPER
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
 
             CreateMap<UserTable, UserCreateDto>();
+            CreateMap<UserTable, SignupResponceDto>().ForMember(x => x.token, opt => opt.MapFrom(x => token.getToken(x.Name, x.Role, x.Id.ToString()))).ForMember(x => x.requestobj, opt => opt.Ignore());
+
         }
     }
 }

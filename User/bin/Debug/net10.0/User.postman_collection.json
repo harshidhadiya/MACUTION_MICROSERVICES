@@ -14,7 +14,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"P@ssw0rd\",\n  \"role\": \"USER\"\n}"
+          "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"P@ssw0rd\",\n  \"role\": \"USER\"\n,  \"phone\": \"1234567890\"\n,  \"address\": \"123 Main St\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/User/createUser",
@@ -51,7 +51,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"password\": \"NewP@ssw0rd\"\n}"
+          "raw": "{\n  \"password\": \"NewP@ssw0rd\"\n , \"confirmPassword\": \"NewP@ssw0rd\"\n}"
         },
         "url": {
           "raw": "{{baseUrl}}/api/User/changepassword",

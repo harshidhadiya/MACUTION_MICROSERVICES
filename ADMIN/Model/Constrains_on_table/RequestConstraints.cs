@@ -25,7 +25,7 @@ namespace USER.Model.Constrains_on_table
                 .IsRequired();
             
             builder.Property(data => data.CreatedAt)
-                .HasDefaultValue(DateTime.UtcNow)
+                .HasDefaultValueSql("GetDate()")
                 .IsRequired();
             
             builder.Property(data => data.VerifiedAt)
