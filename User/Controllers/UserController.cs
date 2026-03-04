@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Name;
 using USER.Data.Dto;
+using USER.Data.Interfaces;
 using USER.Model;
 
 namespace USER.Controllers
@@ -15,6 +16,7 @@ namespace USER.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly ItokenGeneration token;
+        private readonly IsellerLogin loginInterface;
         private PasswordHasher<object> hash; private readonly MACUTIONDB _db;
         readonly IMapper mapper;
         public UserController(
@@ -22,12 +24,13 @@ namespace USER.Controllers
             PasswordHasher<object> hash,
             ItokenGeneration token,
             MACUTIONDB db,
-            IMapper mapper)
+            IMapper mapper,IsellerLogin loginInterface)
         {
             this._logger = logger;
             this.hash = hash;
             this.token = token;
             this._db = db;
+            this.loginInterface=loginInterface;
             this.mapper = mapper;
         }
         [HttpPost("createUser")]
@@ -60,22 +63,7 @@ namespace USER.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(UserLoginDto user)
         {
-            var existUser = await _db.USERS.AsNoTracking().FirstOrDefaultAsync(y => y.Email == user.Email);
-            if (existUser == null)
-            {
-                return BadRequest(new { msg = "User Not Exist with this email" });
-            }
-            var verifyPass = hash.VerifyHashedPassword(new object(), existUser.HashPassword, user.Password);
-            if (verifyPass == PasswordVerificationResult.Failed)
-            {
-                return BadRequest(new { msg = "Incorrecte Password" });
-            }
-            if (user.Role != existUser.Role)
-            {
-                return BadRequest(new { msg = "Role Didn't Match" });
-            }
-
-            return Ok(new { token = token.getToken(existUser.Name, user.Role.ToUpperInvariant(), existUser.Id.ToString()), Name = existUser.Name, Id = existUser.Id });
+            return await loginInterface.Login(user,null); 
         }
         [HttpPost("changepassword")]
         [Authorize]

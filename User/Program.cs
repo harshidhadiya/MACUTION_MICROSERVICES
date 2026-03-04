@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Name;
+using USER.Data.Interfaces;
 using USER.MAPPER;
 using USER.Model;
 using USER.Validation;
@@ -19,7 +20,8 @@ builder.Services.AddSingleton<PasswordHasher<object>>();
 builder.Services.AddDbContext<MACUTIONDB>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddValidatorsFromAssemblyContaining<UserCreateValidation>();
 builder.Services.AddFluentValidationAutoValidation();
-
+builder.Services.AddScoped<IsellerLogin,SellerLogin>();
+builder.Services.AddScoped<IadminLogin,AdminLogin>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("MyPolicy", policy =>
@@ -54,6 +56,8 @@ builder.Services.AddControllers().AddJsonOptions((option=>option.JsonSerializerO
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ItokenGeneration,Tokenget>();
+
+
 builder.Services.AddAutoMapper(typeof(Mapper));
 var app = builder.Build();
 app.UseCors("MyPolicy");

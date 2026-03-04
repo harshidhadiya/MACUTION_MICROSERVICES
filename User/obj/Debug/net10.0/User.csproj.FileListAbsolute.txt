@@ -341,3 +341,4 @@ D:/Codes_pracitce/MACUTION2/User/bin/Debug/net10.0/User.postman_collection.json
 /home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/User/obj/Debug/net10.0/User.pdb
 /home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/User/obj/Debug/net10.0/User.genruntimeconfig.cache
 /home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/User/obj/Debug/net10.0/ref/User.dll
+D:/Codes_pracitce/MACUTION2/User/obj/Debug/net10.0/User.sourcelink.json

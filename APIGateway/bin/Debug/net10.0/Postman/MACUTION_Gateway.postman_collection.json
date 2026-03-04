@@ -1,0 +1,423 @@
+{
+  "info": {
+    "name": "MACUTION API Gateway - Full Flow",
+    "_postman_id": "macution-gateway-full-001",
+    "description": "Single entry point: all requests go through Gateway (http://localhost:5000). Run Collection Runner to verify complete flow. Set baseUrl to gateway URL.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "sellerToken", "value": "", "type": "string" },
+    { "key": "userId", "value": "1", "type": "string" },
+    { "key": "requestId", "value": "1", "type": "string" },
+    { "key": "productId", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1 - User",
+      "item": [
+        {
+          "name": "Create User (any role)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var j = pm.response.json();",
+                  "    if (j.token) { pm.collectionVariables.set('token', j.token); }",
+                  "    if (j.role === 'SELLER' && j.token) pm.collectionVariables.set('sellerToken', j.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"user@test.com\",\n  \"password\": \"P@ssw0rd123\",\n  \"role\": \"USER\",\n  \"phone\": \"1234567890\",\n  \"address\": \"123 Main St\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/user/createUser", "host": ["{{baseUrl}}"], "path": ["api", "user", "createUser"] }
+          }
+        },
+        {
+          "name": "Login (User/Seller)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var j = pm.response.json();",
+                  "    if (j.token) { pm.collectionVariables.set('token', j.token); pm.collectionVariables.set('sellerToken', j.token); }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@test.com\",\n  \"password\": \"P@ssw0rd123\",\n  \"role\": \"USER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/user/login", "host": ["{{baseUrl}}"], "path": ["api", "user", "login"] }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"NewP@ssw0rd123\",\n  \"confirmPassword\": \"NewP@ssw0rd123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/user/changepassword", "host": ["{{baseUrl}}"], "path": ["api", "user", "changepassword"] }
+          }
+        },
+        {
+          "name": "Change Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"9876543210\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/user/changeprofile", "host": ["{{baseUrl}}"], "path": ["api", "user", "changeprofile"] }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/user/getprofile", "host": ["{{baseUrl}}"], "path": ["api", "user", "getprofile"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 - Admin (User Service)",
+      "item": [
+        {
+          "name": "Request Signup (SELLER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var j = pm.response.json();",
+                  "    if (j.data && j.data.id) pm.collectionVariables.set('userId', String(j.data.id));",
+                  "    if (j.data && j.data.requestobj && j.data.requestobj.id) pm.collectionVariables.set('requestId', String(j.data.requestobj.id));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Seller One\",\n  \"email\": \"seller@test.com\",\n  \"password\": \"P@ssw0rd123\",\n  \"role\": \"SELLER\",\n  \"phone\": \"1111111111\",\n  \"address\": \"Seller St\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/request/signup", "host": ["{{baseUrl}}"], "path": ["api", "admin", "request", "signup"] }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var j = pm.response.json();",
+                  "    if (j.token) pm.collectionVariables.set('adminToken', j.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"P@ssw0rd123\",\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/admin/Login", "host": ["{{baseUrl}}"], "path": ["api", "admin", "Login"] }
+          }
+        },
+        {
+          "name": "Get All Verified Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/getallverifiedrequests", "host": ["{{baseUrl}}"], "path": ["api", "admin", "getallverifiedrequests"] }
+          }
+        },
+        {
+          "name": "Get Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/admin/pendingrequests", "host": ["{{baseUrl}}"], "path": ["api", "admin", "pendingrequests"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 - Request (ADMIN Service)",
+      "item": [
+        {
+          "name": "Create Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"requestUserId\": {{userId}}\n}" },
+            "url": { "raw": "{{baseUrl}}/api/Request/create", "host": ["{{baseUrl}}"], "path": ["api", "Request", "create"] }
+          }
+        },
+        {
+          "name": "Verify Request (GET)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/verify/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "verify", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Grant Rights (GET)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/grant-rights/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "grant-rights", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Revoke Rights",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/revoke-rights/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "revoke-rights", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Revoke Verification",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/revoke-verification/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "revoke-verification", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Get Request Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/details/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "details", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Get User Requests (by verifier)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/user/{{userId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "user", "{{userId}}"] }
+          }
+        },
+        {
+          "name": "Get Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/pending", "host": ["{{baseUrl}}"], "path": ["api", "Request", "pending"] }
+          }
+        },
+        {
+          "name": "Get Verified Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/verified", "host": ["{{baseUrl}}"], "path": ["api", "Request", "verified"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 - Product",
+      "item": [
+        {
+          "name": "Create Product",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var j = pm.response.json();",
+                  "    if (j.data && j.data.id) pm.collectionVariables.set('productId', String(j.data.id));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{sellerToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"Laptop\",\n  \"product_description\": \"Gaming laptop\",\n  \"Buy_Date\": \"2024-01-15\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/product/Create", "host": ["{{baseUrl}}"], "path": ["api", "product", "Create"] }
+          }
+        },
+        {
+          "name": "Get Product By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/product/GetById/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "product", "GetById", "{{productId}}"] }
+          }
+        },
+        {
+          "name": "Get All Products (Seller)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{sellerToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/product/get/all/products", "host": ["{{baseUrl}}"], "path": ["api", "product", "get", "all", "products"] }
+          }
+        },
+        {
+          "name": "Get All Products (any user)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/api/product/allproducts", "host": ["{{baseUrl}}"], "path": ["api", "product", "allproducts"] }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{sellerToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"Updated Laptop\",\n  \"product_description\": \"Updated desc\",\n  \"Buy_Date\": \"2024-02-01\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/product/update/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "product", "update", "{{productId}}"] }
+          }
+        },
+        {
+          "name": "Schedule Auction",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{sellerToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startTime\": \"2025-12-01T10:00:00Z\",\n  \"endTime\": \"2025-12-02T10:00:00Z\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/product/{{productId}}/schedule-auction", "host": ["{{baseUrl}}"], "path": ["api", "product", "{{productId}}", "schedule-auction"] }
+          }
+        },
+        {
+          "name": "Clear Auction",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{sellerToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/product/{{productId}}/clear-auction", "host": ["{{baseUrl}}"], "path": ["api", "product", "{{productId}}", "clear-auction"] }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{sellerToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/product/delete/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "product", "delete", "{{productId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 - Verify",
+      "item": [
+        {
+          "name": "Verify Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": {{productId}},\n  \"sellerId\": {{userId}},\n  \"productName\": \"Laptop\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/verify/product", "host": ["{{baseUrl}}"], "path": ["api", "verify", "product"] }
+          }
+        },
+        {
+          "name": "Unverify Product",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/verify/product/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "verify", "product", "{{productId}}"] }
+          }
+        },
+        {
+          "name": "Get Verify Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/verify/status/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "verify", "status", "{{productId}}"] }
+          }
+        },
+        {
+          "name": "My Verified Products (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/verify/my-products", "host": ["{{baseUrl}}"], "path": ["api", "verify", "my-products"] }
+          }
+        },
+        {
+          "name": "Unverified Products",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/verify/unverified-products", "host": ["{{baseUrl}}"], "path": ["api", "verify", "unverified-products"] }
+          }
+        }
+      ]
+    }
+  ]
+}

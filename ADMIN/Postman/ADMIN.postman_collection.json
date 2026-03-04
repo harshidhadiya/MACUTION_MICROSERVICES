@@ -1,0 +1,208 @@
+{
+  "info": {
+    "name": "ADMIN API",
+    "_postman_id": "fdfd9c8a-0000-4000-8000-000000000000",
+    "description": "Collection for ADMIN service endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/create",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "create"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"requestUserId\": 123\n}"
+        }
+      }
+    },
+    {
+      "name": "Verify Request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/verify",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "verify"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"requestId\": 1\n}"
+        }
+      }
+    },
+    {
+      "name": "Grant Rights",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/grant-rights",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "grant-rights"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"requestId\": 1,\n  \"approvedByAdminId\": 5\n}"
+        }
+      }
+    },
+    {
+      "name": "Get Request Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/details/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "details",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User Requests",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/user/5",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "user",
+            "5"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Pending Requests",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/pending",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "pending"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Verified Requests",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/verified",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "verified"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Users With Add Rights",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/request/with-add-rights",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "request",
+            "with-add-rights"
+          ]
+        }
+      }
+    }
+  ]
+}

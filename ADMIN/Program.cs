@@ -47,7 +47,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ItokenGeneration,Tokenget>();
-builder.Services.AddAutoMapper(typeof(Mapper));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 var app = builder.Build();
 app.UseCors("MyPolicy");
 app.UseAuthentication();

@@ -339,3 +339,6 @@ D:/Codes_pracitce/MACUTION2/ADMIN/obj/Debug/net10.0/ref/ADMIN.dll
 /home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/ADMIN/obj/Debug/net10.0/ADMIN.pdb
 /home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/ADMIN/obj/Debug/net10.0/ADMIN.genruntimeconfig.cache
 /home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/ADMIN/obj/Debug/net10.0/ref/ADMIN.dll
+D:/Codes_pracitce/MACUTION2/ADMIN/obj/Debug/net10.0/ADMIN.sourcelink.json
+D:/Codes_pracitce/MACUTION2/ADMIN/bin/Debug/net10.0/Postman/ADMIN.postman_collection.json
+/home/harshid/Project_Practice/_net/Microservice/MACUTION_MICROSERVICES/ADMIN/bin/Debug/net10.0/Postman/ADMIN.postman_collection.json
