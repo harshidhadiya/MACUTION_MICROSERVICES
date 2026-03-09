@@ -1,0 +1,101 @@
+{
+  "info": {
+    "name": "User API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "12345-abcde-user-api-collection"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"P@ssw0rd\",\n  \"role\": \"USER\"\n,  \"phone\": \"1234567890\"\n,  \"address\": \"123 Main St\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/User/createUser",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","User","createUser"]
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"P@ssw0rd\",\n  \"role\": \"USER\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/User/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","User","login"]
+        }
+      }
+    },
+    {
+      "name": "Change Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"password\": \"NewP@ssw0rd\"\n , \"confirmPassword\": \"NewP@ssw0rd\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/User/changepassword",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","User","changepassword"]
+        }
+      }
+    },
+    {
+      "name": "Change Profile",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Johnny\",\n  \"phone\": \"1234567890\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/User/changeprofile",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","User","changeprofile"]
+        }
+      }
+    },
+    {
+      "name": "Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/User/getprofile",
+          "host": ["{{baseUrl}}"],
+          "path": ["api","User","getprofile"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5087" },
+    { "key": "token", "value": "" }
+  ]
+}

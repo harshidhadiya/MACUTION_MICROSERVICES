@@ -1,0 +1,121 @@
+{
+  "info": {
+    "name": "ADMIN API (via Gateway)",
+    "_postman_id": "fdfd9c8a-0000-4000-8000-000000000000",
+    "description": "Request & Product Verify endpoints via Gateway (http://localhost:5000). Create Request is obsolete - use User/admin/request/signup which publishes request.created via RabbitMQ.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "requestId", "value": "1", "type": "string" },
+    { "key": "productId", "value": "1", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Request",
+      "item": [
+        {
+          "name": "Verify Request",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/verify/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "verify", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Grant Rights",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/grant-rights/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "grant-rights", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Revoke Rights",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/revoke-rights/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "revoke-rights", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Revoke Verification",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/revoke-verification/{{requestId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "revoke-verification", "{{requestId}}"] }
+          }
+        },
+        {
+          "name": "Get Request Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/details/1", "host": ["{{baseUrl}}"], "path": ["api", "Request", "details", "1"] }
+          }
+        },
+        {
+          "name": "Get User Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/user/5", "host": ["{{baseUrl}}"], "path": ["api", "Request", "user", "5"] }
+          }
+        },
+        {
+          "name": "Get Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/pending", "host": ["{{baseUrl}}"], "path": ["api", "Request", "pending"] }
+          }
+        },
+        {
+          "name": "Get Verified Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/verified", "host": ["{{baseUrl}}"], "path": ["api", "Request", "verified"] }
+          }
+        },
+        {
+          "name": "Request Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/Request/dashboard", "host": ["{{baseUrl}}"], "path": ["api", "Request", "dashboard"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Verify (via RabbitMQ)",
+      "item": [
+        {
+          "name": "Verify Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ProductId\": {{productId}},\n  \"Description\": \"Verified by admin\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/Request/admin/verify", "host": ["{{baseUrl}}"], "path": ["api", "Request", "admin", "verify"] }
+          }
+        },
+        {
+          "name": "Unverify Product",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/Request/admin/unverify/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "Request", "admin", "unverify", "{{productId}}"] }
+          }
+        }
+      ]
+    }
+  ]
+}
